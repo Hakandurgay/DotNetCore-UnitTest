@@ -1,0 +1,7 @@
+unit test üç aþamadan oluþur
+.Arrange{
+	
+
+}
+Act
+Assert
