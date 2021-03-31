@@ -8,6 +8,13 @@ namespace UnitTest.TEST
 {
     public class CalculatorTest
     {
+        public Calculator calculator { get; set; }
+
+        public CalculatorTest()
+        {
+                this.calculator=new Calculator();
+        }
+
         [Fact] //metod parametre almazsa fact attribute'u kullanılır. Ve test metodu olduğunu bildirir
         public void AddTest()
         {
@@ -21,8 +28,8 @@ namespace UnitTest.TEST
             var total = calculator.Add(a, b);
 
             //Assert doğrulama evresi. accteki sonucun doğru olup olmadığının test edildiği yer
-            Assert.Equal<int>(25, total); //beklenen değer, gelen değer
-            // Assert.NotEqual<int>(25,total); 
+            //Assert.Equal<int>(25, total); //beklenen değer, gelen değer
+             Assert.NotEqual<int>(25,total); 
             #endregion
 
             #region contains ve doesnotcontains kullanımı
@@ -95,5 +102,20 @@ namespace UnitTest.TEST
             Assert.Equal<int>(2,2);
             #endregion
         }
+
+        [Theory]
+        [InlineData(2,5,7)] //parametre böyle verilir
+        [InlineData(10, 2, 12)]
+        public void AddTest2(int a, int b, int expedtedTotal)
+        {
+            var actualTotal = calculator.Add(a, b);
+
+            Assert.Equal(expedtedTotal,actualTotal);
+        }
+
+        //metodlar isimlendirilirken aşağıdaki gibi olabilir
+        //  [MethodName_StateUnderTest_ExpectedBehavior] //metod adı, neyi kontrol ettiği, döndüreceğin şey
+        //  Add_SimpleValues_ReturnTotalValue
+
     }
 }

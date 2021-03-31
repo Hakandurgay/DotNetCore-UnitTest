@@ -1,7 +1,6 @@
 unit test üç aþamadan oluþur
-.Arrange{
-	
-
-}
+Arrange
 Act
 Assert
+
+Mock, uygulamaýnýiçerisndeki class interface vs gibi yapýlarýn taklit edilmesini saðlayan yapýlardýr
