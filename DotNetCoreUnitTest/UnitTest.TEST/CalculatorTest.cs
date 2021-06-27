@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Moq;
 using UnitTest.APP;
 using Xunit;
 
@@ -9,10 +10,11 @@ namespace UnitTest.TEST
     public class CalculatorTest
     {
         public Calculator calculator { get; set; }
-
+        public Mock<ICalculatorService> myMock { get; set; }
         public CalculatorTest()
         {
-                this.calculator=new Calculator();
+            myMock = new Mock<ICalculatorService>();//ICalculator servisinin implemente ettiği calculatorservice taklit edilecek
+            this.calculator=new Calculator(myMock.Object);
         }
 
         [Fact] //metod parametre almazsa fact attribute'u kullanılır. Ve test metodu olduğunu bildirir
@@ -22,8 +24,7 @@ namespace UnitTest.TEST
             //Arrange  //değişkenlerin veya nesnelerin oluşturulduğu yer
             int a = 5;
             int b = 20;
-            var calculator = new Calculator();
-
+            
             //Act
             var total = calculator.Add(a, b);
 
@@ -109,9 +110,30 @@ namespace UnitTest.TEST
         public void AddTest2(int a, int b, int expedtedTotal)
         {
             var actualTotal = calculator.Add(a, b);
-
             Assert.Equal(expedtedTotal,actualTotal);
         }
+
+        [Theory]
+        [InlineData(2, 5, 7)] //parametre böyle verilir
+        [InlineData(10, 2, 12)]
+        public void AddTestMoq(int a, int b, int expedtedTotal)
+        {
+            myMock.Setup(x => x.Add(a, b)).Returns(expedtedTotal);  //Add metodunun içine girmeden o metodu taklit eder. 
+            myMock.Verify(X=>X.Add(a,b),Times.Once); //metodun sadece bir kere çalışıp çalışmamasını test eder
+            //myMock.Verify(X => X.Add(a, b), Times.AtLeast(2));//en az iki kere çağrılıp çağrılmadığını test eder
+        }
+        
+        [Theory]
+        [InlineData(5, 5)] 
+
+        public void AddTestMoqFiveValueTest(int a, int b)
+        {
+            myMock.Setup(x => x.Add(a, b)).Throws(new Exception("hata"));
+         Exception exception=   Assert.Throws<Exception>(() => calculator.Add(a, b));
+            Assert.Equal("hata",exception.Message);
+        }
+
+
 
         //metodlar isimlendirilirken aşağıdaki gibi olabilir
         //  [MethodName_StateUnderTest_ExpectedBehavior] //metod adı, neyi kontrol ettiği, döndüreceğin şey

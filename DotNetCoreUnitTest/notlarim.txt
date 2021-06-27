@@ -4,3 +4,7 @@ Act
 Assert
 
 Mock, uygulamaýnýiçerisndeki class interface vs gibi yapýlarýn taklit edilmesini saðlayan yapýlardýr
+gerçek metodlarýn süresi uzun olmasýna önlem olarak onlarý taklit edecek sistem oluþturur.
+
+Mock kullanýlabilmesi için projelerde abstraction kavramý iyi uygulanmasý lazým.
+
